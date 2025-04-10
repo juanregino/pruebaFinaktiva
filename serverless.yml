@@ -19,6 +19,7 @@ functions:
       - httpApi:
           method: any
           path: /{proxy+}
+          cors: true
 
 plugins:
   - serverless-jetpack
