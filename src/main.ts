@@ -5,7 +5,9 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   await app.useGlobalFilters(new AllExceptionsFilter());
+  
   await app.listen(3000);
 }
 bootstrap();
