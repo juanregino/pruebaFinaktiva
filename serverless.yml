@@ -1,0 +1,26 @@
+service: prueba-finaktiva
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-2
+  stage: dev
+  architecture: arm64
+  memorySize: 2048
+  logRetentionInDays: 1
+  timeout: 15
+  environment:
+    URI_MONGO: mongodb+srv://juanreginopenagos:Regino123.@pruebafinaktiva.tqsbjgm.mongodb.net/?retryWrites=true&w=majority&appName=pruebaFinaktiva
+    
+functions:
+  api:
+    handler: dist/lambda.handler
+    events:
+      - httpApi:
+          method: any
+          path: /{proxy+}
+
+plugins:
+  - serverless-jetpack
+  - serverless-offline
+  
