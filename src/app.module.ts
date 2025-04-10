@@ -6,6 +6,9 @@ import { EventLogController } from './infraestructure/controllers/event-log.cont
 import { EventLogRepositoryImpl } from './infraestructure/database/event.repository.impl';
 import { RegisterEventUseCase } from './application/use-cases/register-event.use-case';
 import { GetEventUseCase } from './application/use-cases/get-event.use-case';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.URI_MONGO),

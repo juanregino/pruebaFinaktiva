@@ -19,7 +19,6 @@ export class EventLog {
   description: string;
   @Prop({
     type: String,
-    enum: ['API', 'MANUAL'],
   })
   type: string;
   @Prop({

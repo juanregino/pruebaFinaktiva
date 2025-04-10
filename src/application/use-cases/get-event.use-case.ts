@@ -9,9 +9,9 @@ export class GetEventUseCase {
 
   async execute(filterDto: FilterEventsDto):Promise<EventLog[]> {
     const filters = {
-      type: filterDto.type,
+      type: filterDto.type ? filterDto.type.toUpperCase() : undefined,
       since: filterDto.since,
-      until: filterDto.until, 
+      until: filterDto.until,
     };
 
     return this.eventLogRepository.findAll(filters);

@@ -3,7 +3,7 @@ export class EventLog {
         public id: string,
         public description: string,
         public type: any, 
-        public Date: Date,
+        public date: Date,
         
     ) {}
 }

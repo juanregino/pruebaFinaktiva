@@ -15,7 +15,7 @@ export class EventLogRepositoryImpl  implements EventLogRepository {
       id: eventLog.id, 
       description: eventLog.description,
       type: eventLog.type,
-      date: eventLog.Date,
+      date: eventLog.date,
     });
   }
 
@@ -27,12 +27,13 @@ export class EventLogRepositoryImpl  implements EventLogRepository {
     }
 
     if (filters?.since || filters?.until) {
-      query.fecha = {};
-      if (filters.since) query.fecha.$gte = filters.since;
-      if (filters.until) query.fecha.$lte = filters.until;
+      query.date = {};
+      if (filters.since) query.date.$gte = filters.since;
+      if (filters.until) query.date.$lte = filters.until;
     }
-
+    console.log(query.date);
     const results = await this.eventLogModel.find(query).exec();
+    console.log(results);
     return results.map(
       (doc) => new EventLog(doc.id, doc.description, doc.type, doc.date),
     );
