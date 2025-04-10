@@ -10,7 +10,7 @@ provider:
   logRetentionInDays: 1
   timeout: 15
   environment:
-    URI_MONGO: mongodb+srv://juanreginopenagos:Regino123.@pruebafinaktiva.tqsbjgm.mongodb.net/?retryWrites=true&w=majority&appName=pruebaFinaktiva
+    URI_MONGO: ${env:URI_MONGO}
     
 functions:
   api:
