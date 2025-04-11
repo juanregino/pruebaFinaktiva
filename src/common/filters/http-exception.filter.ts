@@ -39,7 +39,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         exceptionResponse !== null
       ) {
         if ((exceptionResponse as any).message) {
-          // If the message is an array (validation errors), join the messages
           if (Array.isArray((exceptionResponse as any).message)) {
             message = (exceptionResponse as any).message.join(', ');
           } else {
@@ -52,7 +51,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
         message = 'An error occurred';
       }
     } else {
-      // Attempt to extract message from generic errors
       message = (exception as any).message || 'Internal server error';
     }
 

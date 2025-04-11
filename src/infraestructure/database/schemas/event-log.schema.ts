@@ -1,17 +1,13 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-//TODO : ELIMINAR EL CREATEDAT YA QUE LA PROPIEDAD TIMESTAMP ME LO CREA
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 @Schema({
   timestamps: true,
 })
 export class EventLog {
-
-  @Prop(
-    {
-      required: false,
-      unique: true,
-      type: String,
-    }
-  )
+  @Prop({
+    required: false,
+    unique: true,
+    type: String,
+  })
   id: string;
   @Prop({
     type: String,
@@ -26,6 +22,5 @@ export class EventLog {
     default: Date.now,
   })
   date: Date;
- 
 }
 export const EventLogSchema = SchemaFactory.createForClass(EventLog);

@@ -11,7 +11,21 @@ provider:
   timeout: 15
   environment:
     URI_MONGO: ${env:URI_MONGO}
-    
+
+  httpApi:
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedMethods:
+        - GET
+        - POST
+        - OPTIONS
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Requested-With
+      allowCredentials: false
+
 functions:
   api:
     handler: dist/lambda.handler
@@ -19,9 +33,7 @@ functions:
       - httpApi:
           method: any
           path: /{proxy+}
-          cors: true
 
 plugins:
   - serverless-jetpack
   - serverless-offline
-  

@@ -12,7 +12,6 @@ export class RegisterEventUseCase {
       throw new BadRequestException('La descripción no puede estar vacía');
     }
 
-    // Normalizar tipo (case-insensitive)
     const validTypes = {
       api: 'API',
       manual: 'MANUAL',
@@ -20,11 +19,11 @@ export class RegisterEventUseCase {
 
     const normalizedType = validTypes[input.type.toLowerCase()];
     if (!normalizedType) {
-      throw new BadRequestException('Tipo de evento inválido. Debe ser API o Manual');
+      throw new BadRequestException(
+        'Tipo de evento inválido. Debe ser API o Manual',
+      );
     }
 
-    
-    
     const eventLog = new EventLog(
       Date.now().toString(),
       description,

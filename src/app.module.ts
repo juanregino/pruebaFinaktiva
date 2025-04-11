@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import {MongooseModule} from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 import { EventLogSchema } from './infraestructure/database/schemas/event-log.schema';
 import { EventLogController } from './infraestructure/controllers/event-log.controller';
 import { EventLogRepositoryImpl } from './infraestructure/database/event.repository.impl';
