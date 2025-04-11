@@ -1,85 +1,110 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Backend - Registro de Eventos (Finaktiva)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este proyecto es una solución backend construida en **NestJS**, utilizando una arquitectura **Hexagonal (puertos y adaptadores)**, desplegada en **AWS Lambda** y persistida con **MongoDB**. Implementa buenas prácticas como los principios **SOLID**, y un flujo de despliegue automatizado mediante **GitHub Actions**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🚀 Tecnologías usadas
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- ⚙️ NestJS
+- ☁️ AWS Lambda (API Gateway HTTP)
+- 🗄️ MongoDB Atlas
+- 🧱 Arquitectura Hexagonal (Ports & Adapters)
+- 🔁 GitHub Actions (CI/CD)
 
-## Project setup
+---
+
+## 📦 Estructura del proyecto
 
 ```bash
-$ npm install
+src/
+├── domain/                  # Entidades de dominio y contratos (puertos)
+│   ├── entities/
+│   └── interfaces/
+│
+├── application/             # Casos de uso (reglas de negocio)
+│   └── use-cases/
+│
+├── infrastructure/          # Adaptadores concretos (repositorio Mongo, esquemas)
+│   └── database/              # Controladores, DTOs (adaptadores de entrada)
+│   ├── controllers/
+│   └── dtos/
+│
+├── common/                  # Filtros globales, middlewares, utilidades
+│
+├── app.module.ts
+├── main.ts                  # Local runner
+└── lambda.ts                # Adaptado para AWS Lambda
+
 ```
 
-## Compile and run the project
+## Como Ejecutar localmente
+
+1.  Clona el respositorio
+    ```bash
+    git clone https://github.com/juanregino/pruebaFinaktiva.git
+    cd pruebaFinaktiva
+    ```
+2.  Instala las dependencias
+    ```bash
+    npm install
+    ```
+3.  Crea un archivo `.env` en la raíz del proyecto con las siguientes variables de entorno:
+    ```bash
+    URI_MONGO=mongodb+srv://<usuario>:<contraseña>@<cluster-url>/<db-name>?retryWrites=true&w=majority
+    ```
+4.  Ejecuta el proyecto
+    ```bash
+    npm run start:dev
+    ```
+
+### La api estara disponible en `http://localhost:3000/event-log`
+
+## Pruebas con Postman
+
+---
+
+### 🔹 `POST /event-log`
+
+```json
+{
+  "description": "Descripción del evento",
+  "type": "API",
+  "date": "2025-04-11"
+}
+```
+
+---
+
+### 🔹 `GET /event-log`
+
+Consulta eventos filtrando por tipo y rango de fechas.
+
+**Ejemplo de solicitud:**
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+ GET "http://localhost:3000/event-log?type=API&since=2025-04-11&until=2025-04-12"
 ```
 
-## Run tests
+**Ejemplo de respuesta:**
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```json
+[
+  {
+    "id": "5f8c9c4c-c5b7-4e0a-a6d8-f4f6f3a4b5d2",
+    "description": "Descripción del evento",
+    "type": "API",
+    "date": "2025-04-11"
+  }
+]
 ```
+**Tambien puedes visitar la app desplegada en:**
+https://prueba-finaktiva-front.vercel.app
+- Usuario: admin@admin.com
+- Contraseña: 123456
+---
 
-## Resources
+## 👤 Autor
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- **Nombre:** Juan Pablo Regino Penagos 
+- **Email:** juanreginopenagos@gmail.com  
